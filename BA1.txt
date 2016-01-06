@@ -1,0 +1,49 @@
+// Virgil Stringfield 
+//		BA2-1
+//	Uses recursion to reverse a number
+
+#include "stdafx.h"
+#include <iostream>
+
+using namespace std;
+
+int NumberReverser (int theNumber)
+{
+	if (theNumber < 10)
+		return theNumber;
+	else
+	{
+		cout << theNumber % 10;
+		return NumberReverser(theNumber /10);
+	}
+}
+
+
+int main()
+{
+	int num;
+	int min=0;
+	int max=1000000;
+	bool valid = false;
+	cout<<"Enter a Number Between 1 and 999999:"<<endl;
+	cin>>num;
+
+	while (!valid)
+		{	
+			if(cin.good() && num>min && num<max)
+			valid=true;
+		else
+		{	
+			cin.clear();
+			cin.ignore();
+			cout<<"Invalid Input! Enter a Number Between 1 and 999999:"<<endl;
+			cin>>num;
+
+		}//endl else
+	}//end while
+
+	cout<< NumberReverser (num) <<endl;
+
+	return 0;
+}
+

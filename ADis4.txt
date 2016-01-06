@@ -1,0 +1,126 @@
+/****************** Virgil Stringfield
+************ Discreet Structures Assignment 4
+******************** 12/3/14
+* Checks Visa and Master Card Numbers to see if they are valid card numbers
+*/
+
+#include "stdafx.h"
+#include <iostream>
+#include <string>
+
+class IvalidCardNumber {};
+
+using namespace std;
+
+const int SIZE = 16;
+
+int sum(int x[])
+{
+	int sum=0;
+	for (int i=0; i<SIZE/2; ++i)
+		sum += x[i];
+	return sum;
+}
+
+int main(int argc, char *argv[])
+{
+	
+	int count=0;
+	int e=0;//even
+	int o=0;//odd
+	int sumEven;
+	int sumOdd;
+	int cardNum[SIZE];
+	int cardEven[SIZE/2];
+	int cardOdd[SIZE/2];
+	string temp;
+	string cardtype;
+	bool validArg=true;
+
+	try
+	{//top try
+
+	if (argc == 2)
+		temp=argv[1];
+	else
+	{
+		cout<<"Enter 16 Digit Card Number with no spaces:"<<endl;
+		cin>>temp;
+	}		
+	try
+	{
+		if(temp.size() != 16)
+			throw IvalidCardNumber();			
+		for (int i=0; i<SIZE; i++)
+			cardNum[i]=temp[i]-'0';
+	}//end try
+		catch(...)
+		{
+			cout<<"Invalid Card Number"<<endl;
+			validArg=false;
+			
+		}//end catch
+
+	if(validArg==true)
+	{
+		if(cardNum[0]==5)
+			cardtype="MasterCard";
+		else if (cardNum[0]==4)
+			cardtype="Visa";
+		else
+			throw IvalidCardNumber();
+	}//end if validArg
+	else
+		throw IvalidCardNumber();
+
+	while(count<SIZE)
+	{
+		if(cardNum[count]<5)
+			cardEven[e]=cardNum[count]*2;
+		else if(cardNum[count]==5)
+			cardEven[e]=1;
+		else if(cardNum[count]==6)
+			cardEven[e]=3;
+		else if(cardNum[count]==7)
+			cardEven[e]=5;
+		else if(cardNum[count]==8)
+			cardEven[e]=7;
+		else if(cardNum[count]==9)
+			cardEven[e]=9;
+		else
+			throw IvalidCardNumber();
+		++count;
+		++e;
+		if(cardNum[count]<0)
+			throw IvalidCardNumber();
+		else
+		{
+			cardOdd[o]=cardNum[count];
+			++count;
+			++o;
+		}//end else
+	}//end while
+
+	sumEven= sum(cardEven);
+	sumOdd= sum(cardOdd);
+
+	if ((sumEven + sumOdd)%10 == 0)
+	{
+		cout<<"Valid:"<<cardtype<<endl;
+		for (int i=0; i<SIZE; i++)
+			cout<<cardNum[i];
+		cout<<endl;
+	}
+	else
+		throw IvalidCardNumber();
+
+	}//end top try
+	catch (...)
+	{
+		cout<<"Invalid Card Number"<<endl;
+	}
+	system("PAUSE");
+
+	return 0;
+}
+
